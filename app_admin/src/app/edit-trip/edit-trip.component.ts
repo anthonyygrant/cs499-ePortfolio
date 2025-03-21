@@ -9,23 +9,26 @@ import {
 } from '@angular/forms';
 import { TripDataService } from '../services/trip-data.service';
 import { Trip } from '../models/trip';
+import { AuthenticationService } from '../services/authentication.service'; // Import auth service
 
 @Component({
-    selector: 'app-edit-trip',
-    imports: [CommonModule, ReactiveFormsModule],
-    templateUrl: './edit-trip.component.html',
-    styleUrl: './edit-trip.component.css'
+  selector: 'app-edit-trip',
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './edit-trip.component.html',
+  styleUrl: './edit-trip.component.css',
 })
 export class EditTripComponent implements OnInit {
   public editForm!: FormGroup;
   trip!: any;
   submitted = false;
   message: string = '';
+  isAdmin: boolean = false; // Add isAdmin property
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private tripDataService: TripDataService
+    private tripDataService: TripDataService,
+    private auth: AuthenticationService // Inject auth service
   ) {}
 
   ngOnInit(): void {
@@ -38,7 +41,6 @@ export class EditTripComponent implements OnInit {
     console.log('EditTripComponent::ngOnInit');
     console.log('tripCode: ' + tripCode);
 
-    // initialize form
     this.editForm = this.formBuilder.group({
       _id: [],
       code: [tripCode, Validators.required],
@@ -54,7 +56,6 @@ export class EditTripComponent implements OnInit {
     this.tripDataService.getTrip(tripCode).subscribe({
       next: (value: any) => {
         this.trip = value;
-        // Populate our record into the form
         this.editForm.patchValue(value[0]);
         if (!value) {
           this.message = 'No Trip Retrieved!';
@@ -67,6 +68,8 @@ export class EditTripComponent implements OnInit {
         console.log('Error: ' + error);
       },
     });
+
+    this.isAdmin = this.auth.getCurrentUser().role === 'admin'; // Get user role
   }
 
   public onSubmit(): void {
@@ -83,7 +86,7 @@ export class EditTripComponent implements OnInit {
       });
     }
   }
-  // get the form short name to access the form fields
+
   get f() {
     return this.editForm.controls;
   }

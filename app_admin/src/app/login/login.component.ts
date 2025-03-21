@@ -1,21 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+// login.component.ts
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 import { User } from '../models/user';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-login',
-    imports: [CommonModule, FormsModule],
-    templateUrl: './login.component.html',
-    styleUrl: './login.component.css'
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css',
+  imports: [CommonModule, FormsModule],
 })
 export class LoginComponent {
   public formError: string = '';
-  submitted = false;
   credentials = {
-    name: '',
     email: '',
     password: '',
   };
@@ -25,17 +24,10 @@ export class LoginComponent {
     private authenticationService: AuthenticationService
   ) {}
 
-  ngOnInit(): void {}
-
   public onLoginSubmit(): void {
     this.formError = '';
-    if (
-      !this.credentials.email ||
-      !this.credentials.password ||
-      !this.credentials.name
-    ) {
-      this.formError = 'All fields are required, please try again';
-      this.router.navigateByUrl('#'); // Return to login page
+    if (!this.credentials.email || !this.credentials.password) {
+      this.formError = 'Email and password are required, please try again';
     } else {
       this.doLogin();
     }
@@ -43,22 +35,27 @@ export class LoginComponent {
 
   private doLogin(): void {
     let newUser = {
-      name: this.credentials.name,
       email: this.credentials.email,
     } as User;
-    // console.log('LoginComponent::doLogin');
-    // console.log(this.credentials);
-    this.authenticationService.login(newUser, this.credentials.password);
-    if (this.authenticationService.isLoggedIn()) {
-      // console.log('Router::Direct');
-      this.router.navigate(['']);
-    } else {
-      var timer = setTimeout(() => {
+
+    this.authenticationService.login(newUser, this.credentials.password).subscribe({
+      next: (value: any) => {
         if (this.authenticationService.isLoggedIn()) {
-          // console.log('Router::Pause');
-          this.router.navigate(['']);
+          const role = this.authenticationService.getCurrentUser().role;
+          if (role === 'travlr') {
+            window.location.href = 'http://localhost:3000'; // Redirect to travlr site
+          } else {
+            this.router.navigate(['/']); // Redirect admin to root path
+          }
+        } else {
+          console.error('Login successful, but isLoggedIn returned false.');
+          this.formError = 'Login successful, but an issue occurred. Please try again.';
         }
-      }, 3000);
-    }
+      },
+      error: (error: any) => {
+        console.error('Login error:', error);
+        this.formError = 'Invalid email or password. Please try again.';
+      }
+    });
   }
 }

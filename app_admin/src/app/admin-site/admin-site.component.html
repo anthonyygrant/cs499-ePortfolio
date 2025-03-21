@@ -1,0 +1,8 @@
+<div *ngIf="authenticationService.getCurrentUser().role === 'admin'">
+    <h1>Welcome to the Admin Site</h1>
+    <button routerLink="/add-trip">Add Trip</button>
+    <button routerLink="/edit-trip">Edit Trip</button>
+  </div>
+  <div *ngIf="authenticationService.getCurrentUser().role !== 'admin'">
+    <p>You do not have permission to view this page.</p>
+  </div>

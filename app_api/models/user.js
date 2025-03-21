@@ -3,17 +3,11 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
+  email: { type: String, unique: true, required: true },
+  name: { type: String, required: true },
   hash: String,
   salt: String,
+  role: { type: String, default: 'travlr' }, // Add role field
 });
 
 userSchema.methods.setPassword = function (password) {
@@ -30,12 +24,13 @@ userSchema.methods.validPassword = function (password) {
   return this.hash === hash;
 };
 
-userSchema.methods.generateJWT = function () {
+userSchema.methods.generateJWT = function (role) {
   return jwt.sign(
     {
       _id: this._id,
       email: this.email,
       name: this.name,
+      role: role,
     },
     process.env.JWT_SECRET,
     { expiresIn: "1h" }

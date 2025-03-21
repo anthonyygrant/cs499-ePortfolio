@@ -10,6 +10,7 @@ const register = async (req, res) => {
     name: req.body.name,
     email: req.body.email,
     password: "",
+    role: req.body.role || 'travlr', // Add role from request body or default
   });
   user.setPassword(req.body.password);
   const q = await user.save();
@@ -23,22 +24,19 @@ const register = async (req, res) => {
 };
 
 const login = (req, res) => {
-  // Validate message to ensure that email and password are present.
-  if (!req.body.email || !req.body.password) {
-    return res.status(400).json({ message: "All fields required" });
+  if (!req.body.email || !req.body.password) { // Remove userType check
+    return res.status(400).json({ message: "Email and password are required" });
   }
-  // Delegate authentication to passport module
+
   passport.authenticate("local", (err, user, info) => {
     if (err) {
-      // Error in Authentication Process
       return res.status(404).json(err);
     }
     if (user) {
-      // Auth succeeded - generate JWT and return to caller
-      const token = user.generateJWT();
+      const role = user.role; // Get role from the database
+      const token = user.generateJWT(role);
       res.status(200).json({ token });
     } else {
-      // Auth failed return error
       res.status(401).json(info);
     }
   })(req, res);

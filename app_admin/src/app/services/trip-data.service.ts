@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { AuthResponse } from '../models/auth-response';
 import { BROWSER_STORAGE } from '../storage';
-
 import { Trip } from '../models/trip';
 
 @Injectable({
@@ -15,6 +14,7 @@ export class TripDataService {
     private http: HttpClient,
     @Inject(BROWSER_STORAGE) private storage: Storage
   ) {}
+
   baseUrl = 'http://localhost:3000/api';
   url = this.baseUrl + '/trips';
 
@@ -35,27 +35,27 @@ export class TripDataService {
   }
 
   // Call to our /login endpoint, returns JWT
-  login(user: User, passwd: string): Observable<AuthResponse> {
-    // console.log('Inside TripDataService::login');
-    return this.handleAuthAPICall('login', user, passwd);
+  login(user: User, passwd: string): Observable<AuthResponse> { // Remove userType parameter
+    return this.handleAuthAPICall('login', user, passwd); // Remove userType from call
   }
+
   // Call to our /register endpoint, creates user and returns JWT
   register(user: User, passwd: string): Observable<AuthResponse> {
-    // console.log('Inside TripDataService::register');
     return this.handleAuthAPICall('register', user, passwd);
   }
+
   // helper method to process both login and register methods
   handleAuthAPICall(
     endpoint: string,
     user: User,
     passwd: string
-  ): Observable<AuthResponse> {
-    // console.log('Inside TripDataService::handleAuthAPICall');
+  ): Observable<AuthResponse> { // Remove userType parameter
     let formData = {
       name: user.name,
       email: user.email,
       password: passwd,
     };
+
     return this.http.post<AuthResponse>(
       this.baseUrl + '/' + endpoint,
       formData

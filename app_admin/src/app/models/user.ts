@@ -1,8 +1,5 @@
-export class User {
+export interface User {
   email: string;
   name: string;
-  constructor() {
-    this.email = '';
-    this.name = '';
-  }
+  role?: string; // Add role property 
 }

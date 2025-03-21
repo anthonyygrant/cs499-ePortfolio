@@ -8,12 +8,11 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
-  selector: 'app-trip-listing',
-  standalone: true,
-  imports: [CommonModule, TripCardComponent],
-  providers: [TripDataService],
-  templateUrl: './trip-listing.component.html',
-  styleUrl: './trip-listing.component.css',
+    selector: 'app-trip-listing',
+    imports: [CommonModule, TripCardComponent],
+    providers: [TripDataService],
+    templateUrl: './trip-listing.component.html',
+    styleUrl: './trip-listing.component.css'
 })
 export class TripListingComponent implements OnInit {
   trips: Array<any> = trips;

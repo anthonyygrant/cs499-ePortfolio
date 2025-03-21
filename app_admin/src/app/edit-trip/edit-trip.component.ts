@@ -11,11 +11,10 @@ import { TripDataService } from '../services/trip-data.service';
 import { Trip } from '../models/trip';
 
 @Component({
-  selector: 'app-edit-trip',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './edit-trip.component.html',
-  styleUrl: './edit-trip.component.css',
+    selector: 'app-edit-trip',
+    imports: [CommonModule, ReactiveFormsModule],
+    templateUrl: './edit-trip.component.html',
+    styleUrl: './edit-trip.component.css'
 })
 export class EditTripComponent implements OnInit {
   public editForm!: FormGroup;

@@ -24,7 +24,7 @@ const register = async (req, res) => {
 };
 
 const login = (req, res) => {
-  if (!req.body.email || !req.body.password) { // Remove userType check
+  if (!req.body.email || !req.body.password) {
     return res.status(400).json({ message: "Email and password are required" });
   }
 
@@ -33,7 +33,7 @@ const login = (req, res) => {
       return res.status(404).json(err);
     }
     if (user) {
-      const role = user.role; // Get role from the database
+      const role = user.role;
       const token = user.generateJWT(role);
       res.status(200).json({ token });
     } else {

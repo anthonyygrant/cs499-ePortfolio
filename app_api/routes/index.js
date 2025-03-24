@@ -1,15 +1,12 @@
-const jwt = require("jsonwebtoken"); // Enable JSON Web Tokens
+const jwt = require("jsonwebtoken");
 const express = require("express");
 const router = express.Router();
 
 const tripsController = require("../controllers/trips");
 const authController = require("../controllers/authentication");
 
-// Method to authenticate our JWT
 function authenticateJWT(req, res, next) {
-  // console.log('In Middleware');
   const authHeader = req.headers["authorization"];
-  // console.log('Auth Header: ' + authHeader);
   if (authHeader == null) {
     console.log("Auth Header Required but NOT PRESENT!");
     return res.sendStatus(401);
@@ -20,14 +17,11 @@ function authenticateJWT(req, res, next) {
     return res.sendStatus(501);
   }
   const token = authHeader.split(" ")[1];
-  // console.log('Token: ' + token);
   if (token == null) {
     console.log("Null Bearer Token");
     return res.sendStatus(401);
   }
-  // console.log(process.env.JWT_SECRET);
 
-  // console.log(jwt.decode(token));
   const verified = jwt.verify(
     token,
     process.env.JWT_SECRET,
@@ -35,10 +29,10 @@ function authenticateJWT(req, res, next) {
       if (err) {
         return res.sendStatus(401).json("Token Validation Error!");
       }
-      req.auth = verified; // Set the auth paramto the decoded object
+      req.auth = verified;
     }
   );
-  next(); // We need to continue or this will hang forever
+  next();
 }
 
 router.route("/register").post(authController.register);

@@ -5,20 +5,21 @@ import { TripListingComponent } from './trip-listing/trip-listing.component';
 import { EditTripComponent } from './edit-trip/edit-trip.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuardService } from './auth-guard.service';
+import { TravlrGuardService } from './travlr-guard.service';
 
 export const routes: Routes = [
-  { path: '', component: TripListingComponent, canActivate: [AuthGuardService] }, // Protect the root path
+  { path: '', component: TripListingComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent },
   {
     path: 'add-trip',
     component: AddTripComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [AuthGuardService, TravlrGuardService],
     data: { expectedRole: 'admin' },
   },
   {
     path: 'edit-trip',
     component: EditTripComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [AuthGuardService, TravlrGuardService],
     data: { expectedRole: 'admin' },
   },
 ];

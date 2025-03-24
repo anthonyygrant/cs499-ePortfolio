@@ -2,12 +2,6 @@
   <a class="navbar-brand" routerLink="/">Travlr Getaways</a>
   <ul class="navbar-nav ml-auto">
     <li class="nav-item">
-      <a class="nav-link" routerLink="/add-trip" *ngIf="isLoggedIn() && getAuthService().getCurrentUser().role === 'admin'">Add Trip</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/edit-trip" *ngIf="isLoggedIn() && getAuthService().getCurrentUser().role === 'admin'">Edit Trip</a>
-    </li>
-    <li class="nav-item">
       <a class="nav-link" routerLink="login" *ngIf="!isLoggedIn()">Log in</a>
     </li>
     <li class="nav-item active">

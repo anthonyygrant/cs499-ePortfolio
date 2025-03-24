@@ -5,6 +5,7 @@ import { AuthenticationService } from '../services/authentication.service';
 import { User } from '../models/user';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TravlrRedirectService } from '../travlr-redirect.service'; // Import TravlrRedirectService
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private travlrRedirectService: TravlrRedirectService // Inject TravlrRedirectService
   ) {}
 
   public onLoginSubmit(): void {
@@ -43,7 +45,7 @@ export class LoginComponent {
         if (this.authenticationService.isLoggedIn()) {
           const role = this.authenticationService.getCurrentUser().role;
           if (role === 'travlr') {
-            window.location.href = 'http://localhost:3000'; // Redirect to travlr site
+            this.travlrRedirectService.redirectToTravlrSite(); // Redirect travlr user
           } else {
             this.router.navigate(['/']); // Redirect admin to root path
           }

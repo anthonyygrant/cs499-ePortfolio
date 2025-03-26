@@ -28,7 +28,7 @@ export class AuthGuardService implements CanActivate {
     if (!expectedRole || userRole === expectedRole) {
       return true;
     } else {
-      // Corrected logic: Redirect to the main page or an unauthorized page
+      // Redirect to the main page or an unauthorized page
       this.router.navigate(['/']); // Redirect to the root path
       return false;
     }

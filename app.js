@@ -1,3 +1,4 @@
+// app.js
 require("dotenv").config();
 
 var createError = require("http-errors");
@@ -10,6 +11,7 @@ var session = require("express-session");
 var passport = require("passport");
 require("./app_api/models/db");
 require("./app_api/config/passport");
+const cors = require('cors'); // Add this line
 
 var indexRouter = require("./app_server/routes/index");
 var usersRouter = require("./app_server/routes/users");
@@ -50,29 +52,15 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(cors({
+  origin: 'http://localhost:4200',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  allowedHeaders: 'Content-Type, Authorization'
+}));
+
 app.use("/users", usersRouter);
-
-// Allow CORS for /users/logout
-app.use("/users", (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  next();
-});
-
-// Allow CORS for /api
-app.use("/api", (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  next();
-});
+app.use("/api", apiRouter);
 
 app.use("/", indexRouter);
 app.use("/travel", travelRouter);
@@ -81,7 +69,6 @@ app.use("/news", newsRouter);
 app.use("/meals", mealsRouter);
 app.use("/contact", contactRouter);
 app.use("/about", aboutRouter);
-app.use("/api", apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

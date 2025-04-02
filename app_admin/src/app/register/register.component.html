@@ -1,0 +1,24 @@
+<p>register works!</p>
+<form (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" [(ngModel)]="user.name" required>
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" [(ngModel)]="user.email" required>
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" [(ngModel)]="password" required>
+    </div>
+    <div>
+        <label for="role">Role:</label>
+        <select id="role" name="role" [(ngModel)]="user.role">
+          <option value="travlr">travlr</option>
+          <option value="admin">admin</option>
+        </select>
+    </div>
+    <button type="submit">Register</button>
+  </form>
+  <p *ngIf="errorMessage">{{ errorMessage }}</p>

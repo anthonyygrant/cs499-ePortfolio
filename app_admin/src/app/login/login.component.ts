@@ -5,12 +5,12 @@ import { AuthenticationService } from '../services/authentication.service';
 import { User } from '../models/user';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TravlrRedirectService } from '../travlr-redirect.service'; // Import TravlrRedirectService
+import { TravlrRedirectService } from '../travlr-redirect.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrls: ['./login.component.css'],
   imports: [CommonModule, FormsModule],
 })
 export class LoginComponent {
@@ -23,7 +23,7 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
-    private travlrRedirectService: TravlrRedirectService // Inject TravlrRedirectService
+    private travlrRedirectService: TravlrRedirectService
   ) {}
 
   public onLoginSubmit(): void {
@@ -45,9 +45,9 @@ export class LoginComponent {
         if (this.authenticationService.isLoggedIn()) {
           const role = this.authenticationService.getCurrentUser().role;
           if (role === 'travlr') {
-            this.travlrRedirectService.redirectToTravlrSite(); // Redirect travlr user
+            this.travlrRedirectService.redirectToTravlrSite();
           } else {
-            this.router.navigate(['/']); // Redirect admin to root path
+            this.router.navigate(['/']);
           }
         } else {
           console.error('Login successful, but isLoggedIn returned false.');

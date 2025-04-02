@@ -1,3 +1,4 @@
+// trip-data.service.ts
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -34,27 +35,29 @@ export class TripDataService {
     return this.http.put<Trip[]>(this.url + '/' + formData.code, formData);
   }
 
-  // Call to our /login endpoint, returns JWT
-  login(user: User, passwd: string): Observable<AuthResponse> { // Remove userType parameter
-    return this.handleAuthAPICall('login', user, passwd); // Remove userType from call
+  login(user: User, passwd: string): Observable<AuthResponse> {
+    return this.handleAuthAPICall('login', user, passwd);
   }
 
-  // Call to our /register endpoint, creates user and returns JWT
   register(user: User, passwd: string): Observable<AuthResponse> {
-    return this.handleAuthAPICall('register', user, passwd);
+    return this.handleAuthAPICall('register', user, passwd, user.role);
   }
 
-  // helper method to process both login and register methods
   handleAuthAPICall(
     endpoint: string,
     user: User,
-    passwd: string
-  ): Observable<AuthResponse> { // Remove userType parameter
-    let formData = {
+    passwd: string,
+    role?: string
+  ): Observable<AuthResponse> {
+    let formData: any = {
       name: user.name,
       email: user.email,
       password: passwd,
     };
+
+    if (role) {
+      formData.role = role;
+    }
 
     return this.http.post<AuthResponse>(
       this.baseUrl + '/' + endpoint,

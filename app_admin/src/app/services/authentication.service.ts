@@ -5,6 +5,7 @@ import { AuthResponse } from '../models/auth-response';
 import { TripDataService } from '../services/trip-data.service';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs'; // Import tap
+import { RegisterComponent } from '../register/register.component';
 
 @Injectable({
   providedIn: 'root',

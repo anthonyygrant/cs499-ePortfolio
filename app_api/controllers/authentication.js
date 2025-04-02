@@ -1,45 +1,79 @@
+// authentication.js
 const mongoose = require("mongoose");
 const User = require("../models/user");
-const passport = require("passport");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
-  if (!req.body.name || !req.body.email || !req.body.password) {
-    return res.status(400).json({ message: "All fields required" });
-  }
-  const user = new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: "",
-    role: req.body.role || 'travlr', // Add role from request body or default
-  });
-  user.setPassword(req.body.password);
-  const q = await user.save();
+  try {
+    const { name, email, password, role } = req.body;
 
-  if (!q) {
-    return res.status(400).json(err);
-  } else {
-    const token = user.generateJWT();
-    return res.status(200).json(token);
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "All fields required" });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already in use" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      name,
+      email,
+      hash: hashedPassword,
+      salt: "",
+      role: role || "travlr",
+    });
+
+    await newUser.save();
+
+    const token = jwt.sign(
+      { email: newUser.email, role: newUser.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.status(201).json({ token });
+  } catch (error) {
+    console.error("Registration error:", error);
+    res.status(500).json({ message: "Registration failed", error: error.message });
   }
 };
 
-const login = (req, res) => {
-  if (!req.body.email || !req.body.password) {
-    return res.status(400).json({ message: "Email and password are required" });
-  }
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  passport.authenticate("local", (err, user, info) => {
-    if (err) {
-      return res.status(404).json(err);
+    console.log("Received email:", email);
+    console.log("Received password:", password);
+
+    const user = await User.findOne({ email });
+    console.log("User from database:", user);
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
     }
-    if (user) {
-      const role = user.role;
-      const token = user.generateJWT(role);
-      res.status(200).json({ token });
-    } else {
-      res.status(401).json(info);
+
+    const passwordMatch = await bcrypt.compare(password, user.hash);
+    console.log("Password match:", passwordMatch);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ message: "Invalid email or password" });
     }
-  })(req, res);
+
+    const token = jwt.sign(
+      { email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.status(200).json({ token });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ message: "Login failed", error: error.message });
+  }
 };
 
 module.exports = {

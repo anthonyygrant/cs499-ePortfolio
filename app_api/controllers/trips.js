@@ -3,16 +3,11 @@ const Trip = require("../models/travlr");
 const Model = mongoose.model("trips");
 
 const tripsList = async (req, res) => {
-  const q = await Model.find({}) // No filter, return all records
-    .exec();
-
-  // console.log(q);
+  const q = await Model.find({}).exec();
 
   if (!q) {
-    // Database returned no data
-    return res.status(404).json(err);
+    return res.status(404).json({ message: "Trips not found" });
   } else {
-    // Return resulting trip list
     return res.status(200).json(q);
   }
 };
@@ -20,23 +15,14 @@ const tripsList = async (req, res) => {
 const tripsFindByCode = async (req, res) => {
   const q = await Model.find({ code: req.params.tripCode }).exec();
 
-  // console.log(q);
-
   if (!q) {
-    // Database returned no data
-    return res.status(404).json(err);
+    return res.status(404).json({ message: "Trip not found" });
   } else {
-    // Return resulting trip list
     return res.status(200).json(q);
   }
 };
 
-// PUT: /trips/:tripCode - Updates a Trip
-// Regardless of outcome, response must include HTML status code
-// and JSON message to the requesting client
 const tripsUpdateTrip = async (req, res) => {
-  console.log(req.params);
-  console.log(req.body);
   try {
     const q = await Model.findOneAndUpdate(
       { code: req.params.tripCode },
@@ -53,15 +39,10 @@ const tripsUpdateTrip = async (req, res) => {
     ).exec();
 
     if (!q) {
-      // Database returned no data
       return res.status(404).json({ message: "Trip not found" });
     } else {
-      // Return resulting updated trip
       return res.status(200).json(q);
     }
-
-    // Uncomment the following line to show results of operation
-    // console.log(q);
   } catch (error) {
     console.error("Error updating trip:", error);
     return res.status(500).json({ error: "Internal server error" });
@@ -83,10 +64,27 @@ const tripsAddTrip = async (req, res) => {
   const q = await newtrip.save();
 
   if (!q) {
-    //Database returned no data
-    return res.status(400).json(err);
+    return res.status(400).json({ message: "Error adding trip" });
   } else {
     return res.status(201).json(q);
+  }
+};
+
+const tripsDeleteTrip = async (req, res) => {
+  try {
+    const tripId = req.params.tripId;
+    console.log("Trip ID received by backend:", tripId); // Added console log
+
+    const deletedTrip = await Model.findByIdAndDelete(tripId).exec();
+
+    if (!deletedTrip) {
+      return res.status(404).json({ message: "Trip not found" });
+    } else {
+      return res.status(200).json({ message: "Trip deleted successfully" });
+    }
+  } catch (error) {
+    console.error("Error deleting trip:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -95,4 +93,5 @@ module.exports = {
   tripsFindByCode,
   tripsAddTrip,
   tripsUpdateTrip,
+  tripsDeleteTrip, // Added DELETE function
 };

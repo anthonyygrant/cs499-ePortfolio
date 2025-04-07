@@ -1,0 +1,16 @@
+<div *ngIf="isAdmin">
+    <h2>Remove Trip</h2>
+    <form [formGroup]="removeForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label for="_id">Trip ID:</label>
+        <input type="text" id="_id" formControlName="_id" />
+        <div *ngIf="submitted && f['_id'].errors" class="error">
+          <div *ngIf="f['_id'].errors['required']">Trip ID is required.</div>
+        </div>
+      </div>
+      <button type="submit">Remove Trip</button>
+    </form>
+  </div>
+  <div *ngIf="!isAdmin">
+    <p>You do not have permission to remove trips.</p>
+  </div>

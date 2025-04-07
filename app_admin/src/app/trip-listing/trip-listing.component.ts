@@ -1,22 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { trips } from '../data/trips';
 import { TripCardComponent } from '../trip-card/trip-card.component';
-import { Trip } from '../models/trip';
 import { TripDataService } from '../services/trip-data.service';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
-    selector: 'app-trip-listing',
-    imports: [CommonModule, TripCardComponent],
-    providers: [TripDataService],
-    templateUrl: './trip-listing.component.html',
-    styleUrl: './trip-listing.component.css'
+  selector: 'app-trip-listing',
+  imports: [CommonModule, TripCardComponent],
+  providers: [TripDataService],
+  templateUrl: './trip-listing.component.html',
+  styleUrl: './trip-listing.component.css',
 })
 export class TripListingComponent implements OnInit {
-  trips: Array<any> = trips;
+  trips: Array<any> = [];
   message: string = '';
+
   constructor(
     private tripDataService: TripDataService,
     private router: Router,
@@ -31,6 +30,15 @@ export class TripListingComponent implements OnInit {
 
   public addTrip(): void {
     this.router.navigate(['add-trip']);
+  }
+
+  public editTrip(tripCode: string): void {
+    localStorage.setItem('tripCode', tripCode);
+    this.router.navigate(['edit-trip']);
+  }
+
+  public removeTrip(tripId: string): void {
+    this.router.navigate(['remove-trip'], { queryParams: { id: tripId } });
   }
 
   private getStuff(): void {

@@ -64,4 +64,10 @@ export class TripDataService {
       formData
     );
   }
+
+  deleteTrip(tripId: string): Observable<any> {
+    const deleteUrl = `${this.url}/${tripId}`; // Corrected URL construction
+    console.log('DELETE request to:', deleteUrl);
+    return this.http.delete(deleteUrl);
+  }
 }

@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuardService } from './auth-guard.service';
 import { TravlrGuardService } from './travlr-guard.service';
 import { RegisterComponent } from './register/register.component';
+import { RemoveTripComponent } from './remove-trip/remove-trip.component'; // Import RemoveTripComponent
 
 export const routes: Routes = [
   { path: '', component: TripListingComponent, canActivate: [AuthGuardService] },
@@ -23,5 +24,6 @@ export const routes: Routes = [
     canActivate: [AuthGuardService, TravlrGuardService],
     data: { expectedRole: 'admin' },
   },
-  { path: 'register', component: RegisterComponent}
+  { path: 'register', component: RegisterComponent},
+  { path: 'remove-trip', component: RemoveTripComponent, canActivate: [AuthGuardService, TravlrGuardService], data: { expectedRole: 'admin' } } // Add this route
 ];

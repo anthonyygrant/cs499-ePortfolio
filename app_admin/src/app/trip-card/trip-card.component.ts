@@ -26,6 +26,10 @@ export class TripCardComponent implements OnInit {
     this.router.navigate(['edit-trip']);
   }
 
+  public removeTrip(tripId: string): void {
+    this.router.navigate(['remove-trip'], { queryParams: { id: tripId } });
+  }
+
   public isLoggedIn() {
     return this.authenticationService.isLoggedIn();
   }

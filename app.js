@@ -11,7 +11,7 @@ var session = require("express-session");
 var passport = require("passport");
 require("./app_api/models/db");
 require("./app_api/config/passport");
-const cors = require('cors'); // Add this line
+const cors = require('cors');
 
 var indexRouter = require("./app_server/routes/index");
 var usersRouter = require("./app_server/routes/users");
@@ -24,6 +24,38 @@ var aboutRouter = require("./app_server/routes/about");
 var apiRouter = require("./app_api/routes/index");
 
 var app = express();
+
+// WebSocket setup
+const { WebSocketServer } = require('ws');
+const wss = new WebSocketServer({ port: 8080 }); 
+const clients = new Set();
+
+wss.on('connection', ws => {
+  console.log('Client connected');
+  clients.add(ws);
+
+  ws.on('close', () => {
+    console.log('Client disconnected');
+    clients.delete(ws);
+  });
+
+  ws.on('error', error => {
+    console.error('WebSocket error:', error);
+    clients.delete(ws);
+  });
+});
+
+// Function to broadcast messages to all connected clients
+function broadcast(message) {
+  clients.forEach(client => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(message));
+    }
+  });
+}
+
+// Make the broadcast function available to the controllers
+app.set('broadcast', broadcast);
 
 // view engine setup
 app.set("views", path.join(__dirname, "app_server", "views"));
@@ -53,7 +85,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(cors({
-  origin: 'http://localhost:4200',
+  origin: ['http://localhost:4200', 'http://localhost:3000'], // Allow both origins
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   allowedHeaders: 'Content-Type, Authorization'

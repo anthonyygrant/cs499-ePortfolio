@@ -41,6 +41,8 @@ const tripsUpdateTrip = async (req, res) => {
     if (!q) {
       return res.status(404).json({ message: "Trip not found" });
     } else {
+      // Broadcast the update
+      req.app.get('broadcast')({ type: 'tripUpdated', tripCode: req.params.tripCode });
       return res.status(200).json(q);
     }
   } catch (error) {
@@ -66,6 +68,8 @@ const tripsAddTrip = async (req, res) => {
   if (!q) {
     return res.status(400).json({ message: "Error adding trip" });
   } else {
+    // Broadcast the new trip
+    req.app.get('broadcast')({ type: 'tripAdded', trip: q });
     return res.status(201).json(q);
   }
 };
@@ -73,13 +77,15 @@ const tripsAddTrip = async (req, res) => {
 const tripsDeleteTrip = async (req, res) => {
   try {
     const tripId = req.params.tripId;
-    console.log("Trip ID received by backend:", tripId); // Added console log
+    console.log("Trip ID received by backend:", tripId); 
 
     const deletedTrip = await Model.findByIdAndDelete(tripId).exec();
 
     if (!deletedTrip) {
       return res.status(404).json({ message: "Trip not found" });
     } else {
+      // Broadcast the deletion
+      req.app.get('broadcast')({ type: 'tripDeleted', tripId: req.params.tripId });
       return res.status(200).json({ message: "Trip deleted successfully" });
     }
   } catch (error) {
@@ -93,5 +99,5 @@ module.exports = {
   tripsFindByCode,
   tripsAddTrip,
   tripsUpdateTrip,
-  tripsDeleteTrip, // Added DELETE function
+  tripsDeleteTrip,
 };

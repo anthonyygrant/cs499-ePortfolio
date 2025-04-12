@@ -3,7 +3,7 @@ import {
   importProvidersFrom,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideRouter, Routes, RouterModule } from '@angular/router'; // Import RouterModule
+import { provideRouter, Routes, RouterModule } from '@angular/router'; 
 import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
@@ -20,8 +20,8 @@ const appRoutes: Routes = [
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(appRoutes), // Use the older syntax
-    importProvidersFrom(RouterModule), // Provide RouterModule
+    provideRouter(appRoutes), 
+    importProvidersFrom(RouterModule), 
     provideHttpClient(),
     importProvidersFrom(HttpClientModule),
     authInterceptProvider,

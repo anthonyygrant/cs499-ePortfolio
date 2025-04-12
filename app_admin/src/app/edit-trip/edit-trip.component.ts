@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { TripDataService } from '../services/trip-data.service';
 import { Trip } from '../models/trip';
-import { AuthenticationService } from '../services/authentication.service'; // Import auth service
+import { AuthenticationService } from '../services/authentication.service'; 
 
 @Component({
   selector: 'app-edit-trip',
@@ -22,13 +22,13 @@ export class EditTripComponent implements OnInit {
   trip!: any;
   submitted = false;
   message: string = '';
-  isAdmin: boolean = false; // Add isAdmin property
+  isAdmin: boolean = false; 
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private tripDataService: TripDataService,
-    private auth: AuthenticationService // Inject auth service
+    private auth: AuthenticationService 
   ) {}
 
   ngOnInit(): void {
@@ -69,7 +69,7 @@ export class EditTripComponent implements OnInit {
       },
     });
 
-    this.isAdmin = this.auth.getCurrentUser().role === 'admin'; // Get user role
+    this.isAdmin = this.auth.getCurrentUser().role === 'admin'; 
   }
 
   public onSubmit(): void {

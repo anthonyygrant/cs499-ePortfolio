@@ -6,7 +6,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
+import { Router, ActivatedRoute } from '@angular/router'; 
 import { TripDataService } from '../services/trip-data.service';
 import { AuthenticationService } from '../services/authentication.service';
 
@@ -20,14 +20,14 @@ export class RemoveTripComponent implements OnInit {
   public removeForm!: FormGroup;
   submitted = false;
   isAdmin: boolean = false;
-  tripId: string | null = null; // Add tripId property
+  tripId: string | null = null; 
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private tripService: TripDataService,
     private auth: AuthenticationService,
-    private route: ActivatedRoute // Inject ActivatedRoute
+    private route: ActivatedRoute 
   ) {}
 
   ngOnInit() {
@@ -50,7 +50,7 @@ export class RemoveTripComponent implements OnInit {
     this.submitted = true;
     if (this.removeForm.valid) {
       if (this.tripId) {
-        console.log('Deleting trip with ID:', this.tripId); // Add this line
+        console.log('Deleting trip with ID:', this.tripId); 
         this.tripService.deleteTrip(this.tripId).subscribe({
           next: (data: any) => {
             console.log(data);

@@ -16,7 +16,7 @@
       function logout() {
         // Call the Angular logout function
         var injector = window.ng.getInjector();
-        var authService = injector.get('AuthenticationService'); // Use the string literal 'AuthenticationService'
+        var authService = injector.get('AuthenticationService'); 
         authService.logout();
         window.location.reload(true);
       }
@@ -40,7 +40,6 @@
     ></script>
     <app-root>Loading ...</app-root>
     <script>
-      // Add the logout function to the window object.
       window.logout = logout;
     </script>
   </body>

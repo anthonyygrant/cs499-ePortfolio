@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
-import { CommonModule } from '@angular/common'; // Import CommonModule
+import { CommonModule } from '@angular/common'; 
 
 @Component({
   selector: 'app-admin-site',
   templateUrl: './admin-site.component.html',
   styleUrls: ['./admin-site.component.css'],
-  imports: [CommonModule], // Add CommonModule to imports
+  imports: [CommonModule], 
 })
 export class AdminSiteComponent {
   constructor(public authenticationService: AuthenticationService) {}

@@ -4,7 +4,7 @@ import { User } from '../models/user';
 import { AuthResponse } from '../models/auth-response';
 import { TripDataService } from '../services/trip-data.service';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs'; // Import tap
+import { Observable, tap } from 'rxjs'; 
 import { RegisterComponent } from '../register/register.component';
 
 @Injectable({
@@ -30,7 +30,7 @@ export class AuthenticationService {
 
   public saveToken(token: string): void {
     this.storage.setItem('travlr-token', token);
-    console.log('Saved token:', token); // Add logging
+    console.log('Saved token:', token); 
   }
 
   public logout(): void {
@@ -39,14 +39,14 @@ export class AuthenticationService {
 
   public isLoggedIn(): boolean {
     const token: string = this.getToken();
-    console.log('isLoggedIn - Retrieved token:', token); // Add logging
+    console.log('isLoggedIn - Retrieved token:', token); 
 
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
-        console.log('isLoggedIn - Decoded payload:', payload); // Add logging
-        console.log('isLoggedIn - Expiration time:', payload.exp); // Add logging
-        console.log('isLoggedIn - Current time:', Date.now() / 1000); // Add logging
+        console.log('isLoggedIn - Decoded payload:', payload); 
+        console.log('isLoggedIn - Expiration time:', payload.exp); 
+        console.log('isLoggedIn - Current time:', Date.now() / 1000); 
         return payload.exp > Date.now() / 1000;
       } catch (error) {
         console.error('isLoggedIn - Error decoding JWT:', error);
@@ -72,7 +72,7 @@ export class AuthenticationService {
     return this.tripDataService.login(user, passwd).pipe(
       tap((response: any) => {
         if (response && response.token) {
-          this.saveToken(response.token); // Save the token
+          this.saveToken(response.token); 
         } else {
           console.error('Login response does not contain a token:', response);
         }

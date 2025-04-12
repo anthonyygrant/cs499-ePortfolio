@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TripDataService } from '../services/trip-data.service';
-import { AuthenticationService } from '../services/authentication.service'; // Import auth service
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-add-trip',
@@ -19,13 +19,13 @@ import { AuthenticationService } from '../services/authentication.service'; // I
 export class AddTripComponent implements OnInit {
   public addForm!: FormGroup;
   submitted = false;
-  isAdmin: boolean = false; // Add isAdmin property
+  isAdmin: boolean = false; 
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private tripService: TripDataService,
-    private auth: AuthenticationService // Inject auth service
+    private auth: AuthenticationService 
   ) {}
 
   ngOnInit() {
@@ -41,7 +41,7 @@ export class AddTripComponent implements OnInit {
       description: ['', Validators.required],
     });
 
-    this.isAdmin = this.auth.getCurrentUser().role === 'admin'; // Get user role
+    this.isAdmin = this.auth.getCurrentUser().role === 'admin'; 
   }
 
   public onSubmit() {

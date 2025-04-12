@@ -5,9 +5,9 @@ var router = express.Router();
 
 /* GET home page. */
 const ctrlMain = require("../controllers/main");
-const usersRoutes = require('./users'); // Include users routes
+const usersRoutes = require('./users'); 
 
 router.get("/", ctrlMain.index);
-router.use('/users', usersRoutes); // Mount users routes at /users
+router.use('/users', usersRoutes); 
 
 module.exports = router;

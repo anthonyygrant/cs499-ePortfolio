@@ -69,8 +69,9 @@ Feel free to connect with me on LinkedIn:
 This portfolio project is available here:
 **🔗 [GitHub Repository](https://github.com/anthonyygrant/cs499-ePortfolio)**
 
-If you plan on running the codebase yourself, you'll need to do the following via CLI:
-- Install Node.js to the root of the project (travlr)
-- Install Angular in the app_admin folder
-- Utilize two terminals to run both the travlr server and admin server
+If you plan on running the codebase yourself, you'll need to do the following:
+- Utilize the codebase from 'enhancement_three'
+- via CLI Install Node.js to the root of the project (travlr)
+- via CLI Install Angular in the app_admin folder
+- via CLI Utilize two terminals to run both the travlr server and admin server
 

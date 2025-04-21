@@ -6,7 +6,7 @@ Welcome to my capstone ePortfolio, a curated showcase of projects and profession
 
 Hi, I’m Anthony — a Systems Administrator based in New Hampshire. I live with my wife and our two cats, Moomba and Reggie. My educational background includes:
 
-- **B.S. in Computer Science** with a concentration in **Software Engineering** (SNHU)
+- **B.S. in Computer Science** with a concentration in **Software Engineering** (2025 Anticipated, SNHU)
 - **A.A. in Information Systems** (2022, Liberty University)
 -  **B.S. in Biblical & Theological Studies** (2020, Liberty University)
 
